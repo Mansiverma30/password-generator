@@ -1,15 +1,15 @@
 import { useState, useCallback, useEffect, useRef } from "react";
-import "./App.css"
+import "./App.css";
 
 function App() {
   const [length, setLength] = useState(8);
-  const [numberAllowed, setNumberAllowed] = useState(true);
-  const [charAllowed, setCharAllowed] = useState(true);
+  const [numberAllowed, setNumberAllowed] = useState(false);
+  const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState(" ");
   const [buttonText, setButtonText] = useState("Copy");
 
-//useRef hook
-  const passwordRef = useRef(null)
+  //useRef hook
+  const passwordRef = useRef(null);
 
   const passwordGenerator = useCallback(() => {
     let pass = "";
@@ -23,22 +23,20 @@ function App() {
     }
 
     setPassword(pass);
+    setButtonText("Copy");
   }, [length, numberAllowed, charAllowed, setPassword]);
 
-  
-
-  const copyPasswordToClipboard = useCallback(()=>{
+  const copyPasswordToClipboard = useCallback(() => {
     passwordRef.current?.select();
-    passwordRef.current?.setSelectionRange(0,length)
-    window.navigator.clipboard.writeText(password)
+    passwordRef.current?.setSelectionRange(0, length);
+    window.navigator.clipboard.writeText(password);
 
-    setButtonText("Copied")
-
-  }, [password,length])
+    setButtonText("Copied");
+  }, [password, length]);
 
   useEffect(() => {
-    passwordGenerator()
-  },[length, numberAllowed, charAllowed, passwordGenerator])
+    passwordGenerator();
+  }, [length, numberAllowed, charAllowed, passwordGenerator]);
 
   return (
     <div className="w-full max-w-md mx-auto shadow-md rounded-lg px-4 py-8 my-8 text-white bg-gray-700">
@@ -53,26 +51,32 @@ function App() {
           name="Password"
           ref={passwordRef}
         />
-        <button 
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-400"
-          onClick={copyPasswordToClipboard}
+        <button
+          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md  outline-none "
+          onClick={() => {
+            passwordGenerator();
+            copyPasswordToClipboard();
+          }}
         >
           {buttonText}
         </button>
       </div>
       <div className="flextext-sm gap-x-2">
         <div className="flex items-center gap-x-1">
+          <label htmlFor="passwordLength" className="text-white mr-2">
+            Length:
+          </label>
           <input
-            type="range"
+            type="number"
+            id="passwordLength"
             min={6}
             max={100}
             value={length}
-            className="cursor-pointer"
+            className="outline-none w-20 py-1 px-2 bg-gray-800 text-white rounded-md"
             onChange={(e) => {
               setLength(e.target.value);
             }}
           />
-          <label>Length: {length}</label>
         </div>
         <div className="flex align-items-center gap-x-1">
           <input
@@ -100,6 +104,5 @@ function App() {
     </div>
   );
 }
-``
+``;
 export default App;
-
