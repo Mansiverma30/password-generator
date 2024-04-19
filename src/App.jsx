@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import "./App.css";
 
 function App() {
-  const [length, setLength] = useState(8);
+  const [length, setLength] = useState(6);
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState(" ");
@@ -54,9 +54,9 @@ function App() {
         <button
           className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md  outline-none "
           onClick={() => {
-            passwordGenerator();
             copyPasswordToClipboard();
           }}
+          onChange={()=>{passwordGenerator()}}
         >
           {buttonText}
         </button>
